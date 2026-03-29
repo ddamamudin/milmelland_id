@@ -13,6 +13,7 @@ const navItems = [
   { href: "/admin/sewa", label: "Sewa & Rental", icon: "🛟" },
   { href: "/admin/fasilitas", label: "Fasilitas", icon: "🏊" },
   { href: "/admin/laporan", label: "Laporan", icon: "📈" },
+  { href: "/admin/kas", label: "Buku Kas", icon: "📒" },
   { href: "/admin/pengaturan", label: "Pengaturan", icon: "⚙️" },
 ];
 

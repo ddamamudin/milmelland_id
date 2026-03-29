@@ -88,6 +88,28 @@ export const facilities = pgTable("facilities", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// Enum untuk Buku Kas
+export const cashTypeEnum = pgEnum("cash_type", ["masuk", "keluar"]);
+
+// Kategori Kas
+export const cashCategories = pgTable("cash_categories", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull(),
+  type: cashTypeEnum("type").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Entry Kas
+export const cashEntries = pgTable("cash_entries", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  categoryId: uuid("category_id").references(() => cashCategories.id),
+  type: cashTypeEnum("type").notNull(),
+  amount: integer("amount").notNull(),
+  description: text("description").notNull(),
+  date: date("date").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // Pengaturan Umum
 export const settings = pgTable("settings", {
   id: uuid("id").defaultRandom().primaryKey(),

@@ -29,7 +29,27 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const url = request.nextUrl;
+  const isAdminRoute = url.pathname.startsWith("/admin");
+  const isLoginPage = url.pathname === "/admin/login";
+
+  // Jika mengakses halaman admin (kecuali login) tanpa autentikasi, redirect ke login
+  if (isAdminRoute && !isLoginPage && !user) {
+    const loginUrl = url.clone();
+    loginUrl.pathname = "/admin/login";
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // Jika sudah login dan mengakses halaman login, redirect ke admin dashboard
+  if (isLoginPage && user) {
+    const adminUrl = url.clone();
+    adminUrl.pathname = "/admin";
+    return NextResponse.redirect(adminUrl);
+  }
 
   return supabaseResponse;
 }
